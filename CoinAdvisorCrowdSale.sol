@@ -318,6 +318,25 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
         Refunded(investor, depositedValue);
     }
     
+    /**
+     * 
+     *
+     */
+    function retrieveCadvsLeftInRefunding() onlyOwner public {
+        require(state == State.Refunding);
+        require(token.balanceOf(this) > 0);
+        require(token.transfer(beneficiary, token.balanceOf(this));
+    }
+    
+    /**
+     * 
+     *
+     */
+    function burnCadvsLeftInRefunding() onlyOwner public {
+        require(state == State.Refunding);
+        require(token.balanceOf(this) > 0);
+        token.burn(token.balanceOf(this));
+    }
     
     /**
      * 
