@@ -77,9 +77,11 @@ contract BurnableCADVToken is ERC20 {
      * Instead of this function, use increaseApproval or decreaseApproval.
      * 
      * @param _spender The address which will spend the funds.
-     * @param _addedValue The amount of tokens to increase the allowance by.
+     * @param _value The amount of tokens to increase the allowance by.
      */
-    function approve(address spender, uint256 value) public returns (bool){
+    function approve(address _spender, uint256 _value) public returns (bool) {
+        require(_spender != _spender);
+        require(_value != _value);
         revert();
     }
     
