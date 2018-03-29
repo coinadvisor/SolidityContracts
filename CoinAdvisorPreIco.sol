@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.21;
 
 
 /**
@@ -126,7 +126,7 @@ contract Ownable {
     */
     function transferOwnership(address newOwner) public onlyOwner {
         require(newOwner != address(0));
-        OwnershipTransferred(owner, newOwner);
+        emit OwnershipTransferred(owner, newOwner);
         owner = newOwner;
     }
     
@@ -274,9 +274,9 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
      *
      */
     function retrieveFounds() onlyOwner public {
-        require(state == State.Completed || (state == State.Active && this.balance >= goal));
+        require(state == State.Completed || (state == State.Active && address(this).balance >= goal));
         state = State.Completed;
-        beneficiary.transfer(this.balance);
+        beneficiary.transfer(address(this).balance);
     }
     
     
@@ -286,10 +286,10 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
      */
     function startRefunding() public {
         require(state == State.Active);
-        require(this.balance < goal);
+        require(address(this).balance < goal);
         require(refunduingStartDate < now);
         state = State.Refunding;
-        RefundsEnabled();
+        emit RefundsEnabled();
     }
     
     
@@ -300,7 +300,7 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
     function forceRefunding() onlyOwner public {
         require(state == State.Active);
         state = State.Refunding;
-        RefundsEnabled();
+        emit RefundsEnabled();
     }
     
     
@@ -315,7 +315,7 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
         uint256 depositedValue = deposited[investor];
         deposited[investor] = 0;
         investor.transfer(depositedValue);
-        Refunded(investor, depositedValue);
+        emit Refunded(investor, depositedValue);
     }
     
     /**
@@ -324,7 +324,7 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
      */
     function retrieveCadvsLeftInRefunding() onlyOwner public {
         require(token.balanceOf(this) > 0);
-        require(token.transfer(beneficiary, token.balanceOf(this));
+        require(token.transfer(beneficiary, token.balanceOf(this)));
     }
     
     /**
@@ -333,8 +333,8 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
      */
     function gameOver() onlyOwner public {
         require(!isPhaseValid(currentPhaseId()));
-        require(state == State.Completed || (state == State.Active && this.balance >= goal));
-        require(token.transfer(beneficiary, token.balanceOf(this));
+        require(state == State.Completed || (state == State.Active && address(this).balance >= goal));
+        require(token.transfer(beneficiary, token.balanceOf(this)));
         selfdestruct(beneficiary);
     }
     
