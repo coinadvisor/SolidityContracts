@@ -158,12 +158,12 @@ contract ControlledCrowdSale {
 
 
 /**
- * @title CoinAdvisorCrowdSale
+ * @title CoinAdvisorPreIco
  * @dev This contract is used for storing funds while a crowdsale
  * is in progress. Supports refunding the money if crowdsale fails,
  * and forwarding it to a beneficiary if crowdsale is successful.
  */
-contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
+contract CoinAdvisorPreIco is Ownable, ControlledCrowdSale {
     using SafeMath for uint256;
     enum State { Active, Refunding, Completed }
     
@@ -185,13 +185,13 @@ contract CoinAdvisorCrowdSale is Ownable, ControlledCrowdSale {
     uint256 public refunduingStartDate;
     
 //=== events ==================================================
-    event CrowdSaleClosed(string message, address crowdSaleClosed);
+    event PreIcoClosed(string message, address crowdSaleClosed);
     event RefundsEnabled();
     event Refunded(address indexed beneficiary, uint256 weiAmount);
-    event CrowdSaleStarted(string message, address crowdSaleStarted);
+    event PreIcoStarted(string message, address crowdSaleStarted);
 
 //=== constructor =============================================
-    function CoinAdvisorCrowdSale(address _beneficiary, address _token, uint256 _goal, uint256 _refunduingStartDate) public {
+    function CoinAdvisorPreIco(address _beneficiary, address _token, uint256 _goal, uint256 _refunduingStartDate) public {
         require(_beneficiary != address(0));
         beneficiary = _beneficiary;
         token = BurnableCADVToken(_token);
